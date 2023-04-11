@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include "List.h"
 
 //node structure definition
 
@@ -24,12 +25,12 @@ Node node_create(uint32_t value) {
 
 //node printer for DEBUG
 
-void node_print(Node nd) {
+void node_print(FILE* out, Node nd) {
     if (nd == NULL) {
-        printf("ERROR: in node_print(): Node selected is set to NULL.\n");
+        fprintf(stderr, "ERROR: in node_print(): Node selected is set to NULL.\n");
         exit(1);
     }
-    printf("%llu", nd->data);
+    fprintf(out, "%lu", nd->data);
     return;
 }
 
@@ -101,7 +102,7 @@ int length(List L){
 }
 
 // Returns index of cursor element if defined, -1 otherwise.
-int L_index(List L) {
+int index(List L) {
     if (L == NULL) {
         printf("ERROR: in index(): list selected is set to NULL.\n");
         exit(1);
@@ -211,7 +212,7 @@ void set(List L, int x) {
         fprintf(stderr, "ERROR: in clear(): List Length is zero.\n");
         exit(1);
     }
-    if (L_index(L) < 0) {
+    if (index(L) < 0) {
         fprintf(stderr, "ERROR: in set(): index is less than zero.\n");
         exit(1);
     }
@@ -446,35 +447,60 @@ void append(List L, int x){
     return;
 }
 
+//list copy
+
+List copyList(List L) {
+    if (L == NULL) {
+        fprintf(stderr, "ERROR in copyList(): List input is NULL.\n");
+        exit(1);
+    }
+    List new_list = newList();
+    Node L_next = L->head->right; 
+    for (int i = 0; i < L->length; i++) {
+        append(new_list, L_next->data);
+        L_next = L_next->right;
+    }
+    new_list->length = L->length;
+    return new_list;
+}
+
 //list printing
-void list_print(List l) {
-    if(l == NULL){
+void printList(FILE* out, List L) {
+    if(L == NULL){
         fprintf(stderr, "ERROR: In list_print(): list input set to NULL.\n");
         exit(1);
     }
-    Node current = l->head->right; 
-    for (int i = 0; i < l->length; i++) {
-        printf(" ");
-        node_print(current);
+    Node current = L->head->right; 
+    for (int i = 0; i < L->length; i++) {
+        fprintf(out, " ");
+        node_print(out, current);
         current = current->right;
     } 
-    printf("\n");
+    fprintf(out, "\n");
     return;
 }
-
+/*
 int main(void){
     List l = newList();
     prepend(l, 32);
     prepend(l, 64);
     append(l, 16);
     append(l, 8);
-    list_print(l);
+    printList(stdout, l);
+
+    List new_list = copyList(l);
+    printf("Old List: ");
+    printList(stdout, l);
+    printf("New List: ");
+    printList(stdout, new_list);
+    return 0;
+
     clear(l);
     list_print(l);
     append(l, 2);
     prepend(l, 4);
     list_print(l);
-    l->cursor = 2;
+    l->cursor = 1;
     printf("cursor index 1: %d\n", L_index(l));
     set(l, 2);
     list_print(l);
@@ -544,6 +570,7 @@ int main(void){
     freeList(&l);
     freeList(&A);
     freeList(&B);
-    */
     return 0;
 }
+*/
+
