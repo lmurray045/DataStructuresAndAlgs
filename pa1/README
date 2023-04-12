@@ -1,0 +1,32 @@
+######################
+#  README For Lex.c  #
+#    Liam Murray     #
+#      CSE 101       #
+#   UC Santa Cruz    #
+#    Spring 2023     #
+#                    #
+######################
+
+Included Files:
+
+List.c:       Source code for the List ADT.
+Lex.c:        Source code for the Lex program. Contains Main.
+testList.c:   Source code for the test program for the List ADT.
+
+List.h:       Include .h file for the necessary List ADT functions.
+makefile:     Makefile for included executables. Usage instructions inside.
+README:       Usage and instructions for the program.
+
+USAGE:
+
+Run "make" to create Lex executable.
+Run by using the command:
+	Lex <infile> <outfile>
+The Lex program lexographically orders the lines in the infile,
+and then writes them to the outfile. 
+
+Other make commands:
+	make clean: removes generated files
+	make testList: makes the testList executable
+		run with: testList
+	make check: runs valgrind on Lex, testing for memory leaks.
