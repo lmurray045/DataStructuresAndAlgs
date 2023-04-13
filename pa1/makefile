@@ -3,7 +3,8 @@
 #  #
 #  make             makes Lex
 #  #  make clean       removes object files
-#  make check       runs valgrind to check for memory errors
+#  make check       runs valgrind to check for memory errors requires: "infile" 
+#  		    and "outfile"
 #  #  make testList    makes List test file
 #  #------------------------------------------------------------------------------
 
@@ -25,5 +26,5 @@ Lex.o : List.h Lex.c List.c
 clean :
 	rm -f Lex testList Lex.o testList.o List.o
 
-check : Lex
-	valgrind --leak-check=full Lex
+check : Lex infile outfile
+	valgrind --leak-check=full Lex infile outfile

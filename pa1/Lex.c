@@ -24,10 +24,9 @@ int main(int argc, char* argv[]) {
         str_arr[i] = calloc(CHAR_NUM, sizeof(char));
     }
     rewind(infile);
-    int j = 0; 
-    while (fgets(str_arr[j], CHAR_NUM, infile) != NULL) {
-        j++;
-    }
+    for (int j = 0; j < counter; j++) {
+        fgets(str_arr[j], CHAR_NUM, infile);
+    };
     List l = newList();
     for (int i = 0; i < counter; i++) {
         if (length(l) == 0) {
@@ -69,8 +68,11 @@ int main(int argc, char* argv[]) {
     }
     fclose(infile);
     fclose(outfile);
-    //for (int i = 0; i < counter; i++) {
-      //  free(&(str_arr[i]));
-    //}
+    freeList(&l);
+    for (int i = 0; i < counter; i++){
+        free(str_arr[i]);
+    }
+    free(str_arr);
     return 0;
 }
+

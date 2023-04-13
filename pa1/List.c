@@ -36,8 +36,10 @@ void node_print(FILE* out, Node nd) {
 
 //node delete function 
 void node_delete(Node *n) {
-    free(*n);
-    *n = NULL;
+    if(n != NULL && *n != NULL){
+	free(*n);
+    	*n = NULL;
+    }
     return;
 }
 
@@ -71,7 +73,7 @@ List newList(void) {
 }
 
 //list deconstructor
-//INCOMPLETE: needs to be finished
+
 void freeList(List* pL){
     if (pL == NULL) {
         fprintf(stderr, "ERROR: In freeList()- passed pointer is NULL.\n");
@@ -81,11 +83,12 @@ void freeList(List* pL){
     Node next = (*pL)->head->right;
     for (int i = 0; i < (*pL)->length; i++) {
         first = next;
-        node_delete(&next);
-        next = first->right;
+        next = next->right;
+	node_delete(&first);
     }
     node_delete(&((*pL)->head));
     node_delete(&((*pL)->tail));
+    free(*pL);
     *pL = NULL;
     return;
 }
@@ -191,8 +194,8 @@ void clear(List L) {
     Node next = L->head->right;
     for (int i = 0; i < L->length; i++) {
         start = next;
-        node_delete(&next);
-        next = start->right;
+        next = next->right;
+        node_delete(&start);
     }
     L->head->right = L->tail;
     L->tail->left = L->head;
@@ -383,6 +386,9 @@ void deleteBack(List L) {
     L->tail->left = L->tail->left->left;
     L->tail->left->right = L->tail;
     node_delete(&(deleter));
+    if (L->cursor == L->length - 1) {
+         L->cursor = -1;
+    }
     L->length -= 1;
     return;
 }
@@ -428,6 +434,7 @@ void prepend(List L, int x) {
     L->head->right = n;
     n->left = L->head;
     L->length += 1;
+    L->cursor += 1;
     return;
 }
 

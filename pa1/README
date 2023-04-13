@@ -30,3 +30,4 @@ Other make commands:
 	make testList: makes the testList executable
 		run with: testList
 	make check: runs valgrind on Lex, testing for memory leaks.
+		    requires files "infile" and "outfile" for testing.
