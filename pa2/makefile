@@ -1,8 +1,8 @@
 #------------------------------------------------------------------------------
 # Liam Murray, lijamurr
 # CSE101 Spring 2023, Pa2
-# FindPath.c
-# Makefile for Lex program
+# makefile
+# Makefile for FindPath program
 # Commands:
 #  # make             makes FindPath
 #  # make clean       removes object files

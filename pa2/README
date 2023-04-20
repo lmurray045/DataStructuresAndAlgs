@@ -1,0 +1,34 @@
+###################################
+# Liam Murray, lijamurr
+# CSE101 Spring 2023, Pa2
+# README
+# README for find path program
+####################################
+
+Included Files:
+
+List.c:        Source code for the List ADT.
+Graph.c:       Source code for the Graph ADT.
+FindPath.c:    Source code for the FindPath program. Contains Main.
+GraphTest.c:   Source code for the test program for the Graph ADT.
+
+List.h:       Include .h file for the necessary List ADT functions.
+Graph.h:      Include .h file for the necessary Graph ADT functions.
+makefile:     Makefile for included executables. Usage instructions inside.
+README:       Usage and instructions for the program.
+
+USAGE:
+
+Run "make" to create FindPath executable.
+Run by using the command:
+	FindPath <infile> <outfile>
+The FindPath program accepts vertices and edges in the infile, performs 
+Breadth First Search on the selected points, and then writes the resulting
+paths to the outfile. 
+
+Other make commands:
+	make clean: removes generated files
+	make GraphTest: makes the testList executable
+		run with: GraphTest
+	make check: runs valgrind on FindPath, testing for memory leaks.
+		    requires files "infile" and "outfile" for testing.
