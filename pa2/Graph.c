@@ -135,8 +135,10 @@ void getPath (List L, Graph G, int u) {
         fprintf(stderr, "ERROR: in getPath(): No valid source, make sure BFS() is called.\n");
         exit(1);
     }
+    if (length(L) == 0) {
+        prepend(L, u);
+    }
     if (u == G->last) {
-        //prepend(L, u);
         return;
     }
     else if (G->parent[u] == NIL) {
