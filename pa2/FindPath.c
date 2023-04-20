@@ -22,35 +22,28 @@ int main(int argc, char* argv[]) {
     }
     FILE * infile = fopen(argv[1], "r");
     FILE * outfile = fopen(argv[2], "w");
-    char buf [5];
-    char * pbuf = buf;
-    fgets(pbuf, 5, infile);
-    Graph G = newGraph(atoi(&buf[0]));
-    while (fgets(pbuf, 5, infile) != NULL){
-        if (strcmp(buf, "0 0\n") == 0) {
+    int num1;
+    int num2;
+    fscanf(infile, "%d", &num1);
+    Graph G = newGraph(num1);
+    while (fscanf(infile, "%d %d", &num1, &num2) != 0){
+	    if (num1 == 0 || num2 == 0) {
             break;
         }
-        int num1 = atoi(&buf[0]);
-        int num2 = atoi(&buf[2]);
         addEdge(G, num1, num2);
     }
     printGraph(outfile, G);
     fprintf(outfile, "\n");
     List L = newList();
-    while (fgets(pbuf, 5, infile) != NULL){
-        if (strcmp(buf, "0 0") == 0) {
-            break;
-        }
-        int num1 = atoi(&buf[0]);
-        int num2 = atoi(&buf[2]);
-	if (num1 == 0 || num2 == 0) {
-	    break;
-	}
+    while (fscanf(infile, "%d %d", &num1, &num2) != 0){
+	    if (num1 == 0 || num2 == 0) {
+	        break;
+	    }
         BFS(G, num1);
         int sn = getDist(G, num2);
         if (sn == INF) {
             fprintf(outfile, "The distance from %d to %d is infinity\n", num1, num2);
-            fprintf(outfile, "No %d to %d path exists\n", num1, num2);
+            fprintf(outfile, "No %d-%d path exists\n", num1, num2);
             continue;
         }
         fprintf(outfile, "The distance from %d to %d is %d\n", num1, num2, sn);
@@ -66,3 +59,4 @@ int main(int argc, char* argv[]) {
     freeList(&L);
     return 0;
 }
+
