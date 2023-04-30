@@ -13,59 +13,55 @@
 #include "Graph.h"
 
 
-int main(int argc, char* argv[]){
-   int i, n=8;
-   List S = newList();
-   Graph G = newGraph(n);
-   Graph T=NULL, C=NULL;
-
-   for(i=1; i<=n; i++) append(S, i);
-
-   addArc(G, 1,2);
-   addArc(G, 1,5);
-   addArc(G, 2,5);
-   addArc(G, 2,6);
-   addArc(G, 3,2);
-   addArc(G, 3,4);
-   addArc(G, 3,6);
-   addArc(G, 3,7);
-   addArc(G, 3,8);
-   addArc(G, 6,5);
-   addArc(G, 6,7);
-   addArc(G, 8,4);
-   addArc(G, 8,7);
-   printGraph(stdout, G);
-
-   DFS(G, S);
-   fprintf(stdout, "\n");
-   fprintf(stdout, "x:  d  f  p\n");
-   for(i=1; i<=n; i++){
-      fprintf(stdout, "%d: %2d %2d %2d\n", i, getDiscover(G, i), getFinish(G, i), getParent(G, i));
-   }
-   fprintf(stdout, "\n");
-   printList(stdout, S);
-   fprintf(stdout, "\n");
-
-   T = transpose(G);
-   C = copyGraph(G);
-   fprintf(stdout, "\n");
-   printGraph(stdout, C);
-   fprintf(stdout, "\n");
-   printGraph(stdout, T);
-   fprintf(stdout, "\n");
-   DFS(T, S);
-   fprintf(stdout, "\n");
-   fprintf(stdout, "x:  d  f  p\n");
-   for(i=1; i<=n; i++){
-      fprintf(stdout, "%d: %2d %2d %2d\n", i, getDiscover(T, i), getFinish(T, i), getParent(T, i));
-   }
-   fprintf(stdout, "\n");
-   printList(stdout, S);
-   fprintf(stdout, "\n");
-
-   freeList(&S);
-   freeGraph(&G);
-   freeGraph(&T);
-   freeGraph(&C);
-   return(0);
-}
+int main(void) {
+    printf("Testing graph creation...\n");
+    Graph G = newGraph(5);
+    printf("Adding arcs...\n");
+    addArc(G, 2, 4);
+    addArc(G, 1, 5);
+    addArc(G, 3, 5);
+    addArc(G, 2, 5);
+    printf("Current Graph representation: \n");
+    printGraph(stdout, G);
+    printf("\n\n\n");
+    printf("Performing Depth First Search on generated Graph...\n");
+    List dL = newList();
+    for (int i = 1; i <= 5; i++) {
+        append(dL, i);
+    }
+    DFS(G, dL);
+    printf("\n\n\n");
+    printf("Testing access functions: ");
+    printf("Order: %d. Size: %d.\n", getOrder(G), getSize(G));
+    printf("\n");
+    for(int i = 1; i < 6; i++) {
+        printf("Parent of %d: %d.\n", i, getParent(G, i));
+        printf("Discover time of %d: %d; Finish time of %d: %d\n", i, getDiscover(G, i), i, getFinish(G, i));
+    }
+    printf("\n\n\n");
+    printf("Testing Copy function...\n");
+    Graph cG = copyGraph(G);
+    printf("copied Graph:\n");
+    printGraph(stdout, cG);
+    printf("\n\n\n");
+    printf("Testing transpose function...\n");
+    Graph tG = transpose(G);
+    printf("transposed Graph:\n");
+    printGraph(stdout, tG);
+    printf("\n\n\n");
+    printf("Testing Make Null...\n");
+    makeNull(G);
+    printGraph(stdout, G); 
+    //printf("Source Vertex: %d\n", getSource(G));
+    //int c = 4;
+    //printf("parent of %d: %d\n", c, getParent(G, c));
+    //printf("Distance from %d to %d: %d\n", getSource(G), c, getDist(G, c));
+    freeGraph(&G);
+    freeList(&dL);
+    freeGraph(&cG);
+    freeGraph(&tG);
+    printf("\n\n\n");
+    printf("Test complete.\n");
+    return 0;
+                                           }
+    

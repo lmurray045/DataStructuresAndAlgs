@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-#define INF -1
+#define UNDEF -1
 #define NIL 0
 
 /*** Structure Definitions ***/

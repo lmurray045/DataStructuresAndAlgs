@@ -217,6 +217,13 @@ void addArc (Graph G, int u, int v) {
     }
     int ins = v;
     moveFront(G->vertices[u]);
+    for (int i = 0; i < length(G->vertices[u]); i++){
+    	if (get(G->vertices[u]) == ins) {
+	    return;
+	}
+	moveNext(G->vertices[u]);
+    }
+    moveFront(G->vertices[u]);
     while (ins > get(G->vertices[u])) {
         moveNext(G->vertices[u]);
         if (index(G->vertices[u]) < 0) {

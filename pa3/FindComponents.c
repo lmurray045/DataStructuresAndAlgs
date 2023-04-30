@@ -40,10 +40,12 @@ int main(int argc, char * argv[]) {
     DFS(G, L);
     DFS(tG, L);
     List roots = newList();
-    for (int i = 1; i <= getOrder(G); i++) {
-        if (getParent(tG, i) == NIL) {
-            append(roots, i);
+    moveBack(L);
+    for (int i = 1; i <= length(L); i++) {
+        if (getParent(tG, get(L)) == NIL) {
+            append(roots, get(L));
         }
+   	movePrev(L);
     }
     fprintf(outfile, "G contains %d strongly connected components:\n", length(roots));
     moveBack(L);
@@ -54,6 +56,9 @@ int main(int argc, char * argv[]) {
         fprintf(outfile, "Component %d:", i);
         int val = 0;
         while (val != cR) {
+	    if (index(L) == -1) {
+	        break;	
+	    }
             int val = get(L);
             if (val == cR) {
                 prepend(pL, val);
@@ -61,7 +66,7 @@ int main(int argc, char * argv[]) {
                 break;
             }
             else {
-                append(pL, val);
+                prepend(pL, val);
                 movePrev(L);
             }
         }
