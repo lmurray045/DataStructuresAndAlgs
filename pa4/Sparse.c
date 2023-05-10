@@ -24,7 +24,7 @@ int main(int argc, char * argv[]) {
     Matrix A = newMatrix(n);
     Matrix B = newMatrix(n);
     for (int i = 0; i < a; i++){
-        fscanf(infile, "%d %d %.17g", &num1, &num2, &num3);
+        fscanf(infile, "%d %d %lf", &num1, &num2, &num3);
         if (num3 == 0) {
                continue;
         }

@@ -281,7 +281,7 @@ Matrix transpose(Matrix A) {
     for(int i = 1; i <= size(A); i++) {
         moveFront(A->rows[i]);
         for (int n = 1; n <= length(A->rows[i]); n++) {
-            float num = ((Entry)get(A->rows[i]))->data;
+            double num = ((Entry)get(A->rows[i]))->data;
 	    int col1 = ((Entry)get(A->rows[i]))->col;
             changeEntry(B, col1, i, num);
             moveNext(A->rows[i]);

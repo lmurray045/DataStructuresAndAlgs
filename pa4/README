@@ -1,0 +1,40 @@
+###################################
+# Liam Murray, lijamurr
+# CSE101 Spring 2023, Pa3
+# README
+# README for sparse program
+####################################
+
+Included Files:
+
+List.c:        	  Source code for the List ADT.
+Matrix.c:         Source code for the Matrix ADT.
+Sparse.c:         Source code for the Sparse program. Contains Main.
+MatrixTest.c:     Source code for the test program for the Matrix ADT.
+ListTest.c:       Source code for the test program for the List ADT.
+
+List.h:       Include .h file for the necessary List ADT functions.
+Matrix.h:     Include .h file for the necessary Matrix ADT functions.
+makefile:     Makefile for included executables. Usage instructions inside.
+README:       Usage and instructions for the program.
+
+USAGE:
+
+Run "make" to create Spare executable.
+Run by using the command:
+	Sparse <infile> <outfile>
+The Sparse program accepts Matrix vertices via the infile, calculates various
+martix operarions on the Matrices, and prints the results to the out
+
+Notes about the assignment:
+	At the time of writing, I have yet to solve a major floating point
+    conversion error. In all likelyhood, I will submit an assignment in which the tests are off by ~.1 per measurement.
+
+Other make commands:
+	make clean: removes generated files
+	make MatrixTest: makes the MatrixTest executable
+		run with: ./MatrixTest
+	make ListTest: makes the ListTest executable
+                run with: ./ListTest
+	make check: runs valgrind on Sparse, testing for memory leaks.
+		    requires files "infile" and "outfile" for testing.

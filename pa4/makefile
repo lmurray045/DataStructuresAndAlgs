@@ -9,6 +9,7 @@
 #  # make check       runs valgrind to check for memory errors requires: "infile" 
 #  #	    		  and "outfile"
 #  # make MatrixTest  makes Matrix test file
+#  # make ListTest  makes List test file
 #  #------------------------------------------------------------------------------
 
 Sparse : Sparse.o List.o Matrix.o
@@ -17,8 +18,14 @@ Sparse : Sparse.o List.o Matrix.o
 MatrixTest : MatrixTest.o List.o Matrix.o
 	gcc -std=c17 -Wall -o MatrixTest MatrixTest.o List.o Matrix.o
 
+ListTest : ListTest.o List.o
+	gcc -std=c17 -Wall -o ListTest ListTest.o List.o
+
 MatrixTest.o : List.h Matrix.h MatrixTest.c
 	gcc -std=c17 -Wall -c MatrixTest.c
+
+ListTest.o : List.h ListTest.c
+	gcc -std=c17 -Wall -c ListTest.c
 
 List.o : List.h List.c
 	gcc -std=c17 -Wall -c List.c
@@ -30,7 +37,7 @@ Sparse.o : List.h Matrix.h Sparse.c List.c Matrix.c
 	gcc -std=c17 -Wall -c Sparse.c
 
 clean :
-	rm -f Sparse MatrixTest Sparse.o MatrixTest.o List.o Matrix.o
+	rm -f Sparse MatrixTest ListTest ListTest.o Sparse.o MatrixTest.o List.o Matrix.o
 
 check : Sparse infile outfile
 	valgrind --leak-check=full Sparse infile outfile
