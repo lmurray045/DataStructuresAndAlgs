@@ -1,0 +1,39 @@
+###################################
+# Liam Murray, lijamurr
+# CSE101 Spring 2023, Pa5
+# README
+# README for Shuffle program
+####################################
+
+Included Files:
+
+List.cpp:         Source code for the List ADT.
+Shuffle.cpp:      Source code for the  Shuffle Client.
+ListTest.cpp:     Source code for the test program for the List ADT.
+
+List.h:       Include .h file for the necessary List ADT functions.
+makefile:     Makefile for included executables. Usage instructions inside.
+README:       Usage and instructions for the program.
+
+USAGE:
+
+Run "make" to create Shuffle executable.
+Run by using the command:
+	Shuffle <Integer>
+The Shuffle program accepts an integer as an input, then calculates how many 
+riffle shuffles it takes to get that size of a deck of cards back into
+perfect order.
+
+Assignment Notes:
+	When running the provided grading script, I was given a message that
+	I was failing the "100" test, saying that the last few lines were not
+	present. However, upon running the same command in terminal (and using
+	diff to compare) I found no errors. I could not recreate the issue, and 	have gotten inconsistent results surrounding the exact lines that are 
+	missing (sometimes its lines 75- 100, sometimes 96-100). I do not know
+	what the problem is, if there is a problem, or how to solve it. 
+
+Other make commands:
+	make clean: removes generated files
+	make ListTest: makes the ListTest executable
+		run with: ./ListTest
+	make check: runs valgrind on Shuffle, testing for memory leaks.
