@@ -28,7 +28,8 @@ Assignment Notes:
 	When running the provided grading script, I was given a message that
 	I was failing the "100" test, saying that the last few lines were not
 	present. However, upon running the same command in terminal (and using
-	diff to compare) I found no errors. I could not recreate the issue, and 	have gotten inconsistent results surrounding the exact lines that are 
+	diff to compare) I found no errors. I could not recreate the issue, and 
+	have gotten inconsistent results surrounding the exact lines that are 
 	missing (sometimes its lines 75- 100, sometimes 96-100). I do not know
 	what the problem is, if there is a problem, or how to solve it. 
 
