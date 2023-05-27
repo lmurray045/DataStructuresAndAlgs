@@ -1,5 +1,6 @@
 //-----------------------------------------------------------------------------
 // Liam Murray
+// lijamurr
 // CSE 101, Spring 2023, Pa6
 // BigIntegerTest.cpp
 // Test Harness for BigInt ADT
@@ -16,8 +17,6 @@
 
 using namespace std;
 
-ListElement base = 1000000000;
-int power = 9;
 
 int main() {
     cout << "Empty Number assignment: ";
@@ -63,8 +62,8 @@ int main() {
 
     cout << "Big Integer Function Tests------------------------------------------------------" << endl << endl;
 
-    BigInteger B = -988887;
-    BigInteger C = 654321;
+    BigInteger B("-988887");
+    BigInteger C("654318");
     BigInteger A = B.add(C);
     BigInteger S = B.sub(C);
     BigInteger M = B.mult(C);

@@ -2,31 +2,35 @@
 # Liam Murray, lijamurr
 # CSE101 Spring 2023, Pa6
 # README
-# README for Shuffle program
+# README for Arithmetic program
 ####################################
 
 Included Files:
 
 List.cpp:         Source code for the List ADT.
-Shuffle.cpp:      Source code for the  Shuffle Client.
+BigInteger.cpp:   Source code for the BigInteger ADT.
+Arithmetic.cpp:   Source code for the  Arithmetic Client.
 ListTest.cpp:     Source code for the test program for the List ADT.
+BigIntegerTest.cpp:     Source code for the test program for the BigInteger ADT.
 
 List.h:       Include .h file for the necessary List ADT functions.
+BigInteger.h:       Include .h file for the necessary BigInteger ADT functions.
 makefile:     Makefile for included executables. Usage instructions inside.
 README:       Usage and instructions for the program.
 
 USAGE:
 
-Run "make" to create Shuffle executable.
+Run "make" to create Arithmetic executable.
 Run by using the command:
-	Shuffle <Integer>
-The Shuffle program accepts an integer as an input, then calculates how many 
-riffle shuffles it takes to get that size of a deck of cards back into
-perfect order.
+	Arithmetic <infile> <outfile>
+The Arithmetic program accepts an two larger integers as an input, then 
+performs various math functions on them, and write it to the outfile.
 
 
 Other make commands:
 	make clean: removes generated files
 	make ListTest: makes the ListTest executable
 		run with: ./ListTest
-	make check: runs valgrind on Shuffle, testing for memory leaks.
+	make BigIntegerTest: makes the ListTest executable
+		run with: ./BigIntegerTest
+	make check: runs valgrind on Arithmetic, testing for memory leaks.

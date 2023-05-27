@@ -1,5 +1,6 @@
 //-----------------------------------------------------------------------------
 // Liam Murray
+// Lijamurr
 // CSE 101, Spring 2023, Pa6
 // BigInteger.cpp
 // Source Code for BigInt ADT
@@ -52,6 +53,9 @@ BigInteger::BigInteger(long x) {
         counter++;
     }
     reverse(substring.begin(), substring.end());
+    if (stol(substring) == 0){
+        return;
+    }
     digits.insertAfter(stol(substring));
     return;   
 }
@@ -83,6 +87,9 @@ BigInteger::BigInteger(std::string s) {
         counter++;
     }
     reverse(substring.begin(), substring.end());
+    if (stol(substring) == 0){
+        return;
+    }
     digits.insertAfter(stol(substring));
     return;   
 }
@@ -183,7 +190,7 @@ void negateList(List& L) {
 void sumList(List& S, List A, List B, int sgn) {
     A.moveFront();
     B.moveFront();
-    int compare;
+    int compare = 0;
     if (A.length() < B.length()){
         compare = -1;
     }
@@ -202,19 +209,33 @@ void sumList(List& S, List A, List B, int sgn) {
             }
         }
     }
-    List X;
     List Y;
-    int switched = 0;
-    if ((compare = -1)){
-        X = B;
-        //cout << "A= " << endl;
-        //cout << A << endl;
+    List X;
+    if (A.length() <= 1){
+        if (A.length() == 0) {
+            Y.insertAfter(0);
+        }
+        else {
+            Y.insertAfter(A.front());
+        }
+    }
+    else {
         Y = A;
-        switched = 1;
+    }
+    if (B.length() <= 1){ 
+        if (B.length() == 0) {
+            X.insertAfter(0);
+        }
+        else {
+            X.insertAfter(B.front());
+        }
     }
     else {
         X = B;
-        Y = A;
+    }
+    int switched = 0;
+    if ((compare = -1)){
+        switched = 1;
     }
     X.moveFront();
     Y.moveFront();
@@ -249,10 +270,10 @@ void sumList(List& S, List A, List B, int sgn) {
             S.insertAfter(a + b);
         }
     }
-    if (switched == 1 && sgn == -1) {
+    if (switched == 1 && sgn == -1 && S.length() != 0) {
         S.moveFront();
-        ListElement l = S.moveNext();
-        S.setBefore(l - (2 * l));
+        ListElement l = S.peekNext();
+        S.setAfter(l - (2 * l));
     }
 }
 
@@ -283,6 +304,9 @@ int normalizeList_to_one(List& L) {
 }
 
 int normalizeList(List& L) {
+    if (L.length() == 0) {
+        return 0;
+    }
     L.moveBack();
     int carry = 0;
     while(L.position() != 0){
@@ -292,7 +316,9 @@ int normalizeList(List& L) {
         string snum = std::to_string(num);
         int over = std::size(snum) - power;
         if (over > 0) {
-
+            if (snum[0] == '-' && over == 1) {
+                break;
+            }
             string sub = "";
             for(int i = 0; i < over; i++){
                 sub += snum[0];
@@ -327,26 +353,25 @@ BigInteger BigInteger::add(const BigInteger& N) const {
     BigInteger A;
     A.signum = 1;
     if((signum == -1 || N.signum == -1) && signum != N.signum) {
-        //cout << "digits: " << digits << endl;
         sumList(A.digits, digits, N.digits, -1);
     }
     else {
-        //cout << "digits: " << digits << endl;
         sumList(A.digits, digits, N.digits, 1);
     }
-    if(signum == -1) {
-        A.digits.moveFront();
-        ListElement elm = A.digits.moveNext();
-        A.digits.setBefore(elm - (2 * elm));
+    if (A.digits.length() == 0) {
+        A.signum = 0;
+        return A;
     }
-    if (A.digits.front() < 0) {
+    if(signum == -1 && A.digits.length() != 0) {
+        A.digits.moveFront();
+        ListElement elm = A.digits.peekNext();
+        A.digits.setAfter(elm - (2 * elm));
+    }
+    if (A.digits.front() < 0 && A.digits.length() != 0) {
         A.signum = -1;
         A.digits.moveFront();
-        ListElement elm = A.digits.moveNext();
-        A.digits.setBefore(elm - (2 * elm));
-    }
-    if (A.digits.front() == 0) {
-        A.signum = 0;
+        ListElement elm = A.digits.peekNext();
+        A.digits.setAfter(elm - (2 * elm));
     }
     normalizeList(A.digits);
     return A;
@@ -378,6 +403,11 @@ BigInteger BigInteger::mult(const BigInteger& N) const {
         scale = pow(10, i);
         scalarMultList(addL.digits, (elm * scale)); 
         normalizeList(addL.digits);
+        addL.digits.moveFront();
+        while (addL.digits.position() != addL.digits.length()) {
+            ListElement elm = addL.digits.moveNext();
+            addL.digits.setBefore(abs(elm));
+        }
         BigInteger temp = A.add(addL);
         A.digits = temp.digits;
     }
@@ -396,7 +426,17 @@ std::string BigInteger::to_string() {
     if (signum == -1) {
         sub += "-";
     }
-    sub += digits.to_string();
+    digits.moveFront();
+    while(digits.position() != digits.length()) {
+        string temp = std::to_string(digits.moveNext());
+        int ts = temp.size();
+        if (ts < power && digits.position() != 1) {
+            for(int i = 0; i < power - ts; i ++) {
+                sub += "0";
+            }
+        }
+        sub += temp;
+    }
     return sub;
 }
 
