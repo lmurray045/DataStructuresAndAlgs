@@ -1,0 +1,36 @@
+###################################
+# Liam Murray, lijamurr
+# CSE101 Spring 2023, Pa7
+# README
+# README for Arithmetic program
+####################################
+
+Included Files:
+
+List.cpp:         Source code for the List ADT.
+BigInteger.cpp:   Source code for the BigInteger ADT.
+Arithmetic.cpp:   Source code for the  Arithmetic Client.
+ListTest.cpp:     Source code for the test program for the List ADT.
+BigIntegerTest.cpp:     Source code for the test program for the BigInteger ADT.
+
+List.h:       Include .h file for the necessary List ADT functions.
+BigInteger.h:       Include .h file for the necessary BigInteger ADT functions.
+makefile:     Makefile for included executables. Usage instructions inside.
+README:       Usage and instructions for the program.
+
+USAGE:
+
+Run "make" to create Arithmetic executable.
+Run by using the command:
+	Arithmetic <infile> <outfile>
+The Arithmetic program accepts an two larger integers as an input, then 
+performs various math functions on them, and write it to the outfile.
+
+
+Other make commands:
+	make clean: removes generated files
+	make ListTest: makes the ListTest executable
+		run with: ./ListTest
+	make BigIntegerTest: makes the ListTest executable
+		run with: ./BigIntegerTest
+	make check: runs valgrind on Arithmetic, testing for memory leaks.
