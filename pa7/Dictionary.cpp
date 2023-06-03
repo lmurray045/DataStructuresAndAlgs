@@ -54,10 +54,10 @@ Dictionary::Node* Dictionary::search(Dictionary::Node* R, keyType k) const {
         return R;
     }
     Node * Rl = search(R->left, k);
-    Node * Rr = search(R->right, k);
     if (Rl != nil ) {
         return Rl;
     }
+    Node * Rr = search(R->right, k);
     if (Rr != nil ) {
         return Rr;
     }
@@ -208,36 +208,17 @@ void Dictionary::setValue(keyType k, valType v){
         root->right = nil;
         num_pairs += 1;
     }
-    Node * sN = search(root, k);
-    if (sN == nil){
-        Node* R = root;
-        while(R->left != nil || R->right != nil){
-            if(k < R->key && R->left != nil) {
-                R = R->left;
-                continue;
-            }
-            else if(k < R->key && R->left == nil) {
-                R->left = new Node(k, v);
-                R->left->parent = R;
-                R->left->left = nil;
-                R->left->right = nil;
-                num_pairs += 1;
-                return;
-            }
-            if(k > R->key && R->right != nil) {
-                R = R->right;
-                continue;
-            }
-            else if (k > R->key && R->right == nil) {
-                R->right = new Node(k, v);
-                R->right->parent = R;
-                R->right->left = nil;
-                R->right->right = nil;
-                num_pairs += 1;
-                return;
-            }
+    Node* R = root;
+    while(R->left != nil || R->right != nil){
+        if (k == R->key) {
+            R->val = v;
+            return;
         }
-        if (k < R->key) {
+        if(k < R->key && R->left != nil) {
+            R = R->left;
+            continue;
+        }
+        else if(k < R->key && R->left == nil) {
             R->left = new Node(k, v);
             R->left->parent = R;
             R->left->left = nil;
@@ -245,7 +226,11 @@ void Dictionary::setValue(keyType k, valType v){
             num_pairs += 1;
             return;
         }
-        if (k > R->key) {
+        if(k > R->key && R->right != nil) {
+            R = R->right;
+            continue;
+        }
+        else if (k > R->key && R->right == nil) {
             R->right = new Node(k, v);
             R->right->parent = R;
             R->right->left = nil;
@@ -254,8 +239,25 @@ void Dictionary::setValue(keyType k, valType v){
             return;
         }
     }
-    else {
-        sN->val = v;
+    if (k == R->key) {
+            R->val = v;
+            return;
+        }
+    if (k < R->key) {
+        R->left = new Node(k, v);
+        R->left->parent = R;
+        R->left->left = nil;
+        R->left->right = nil;
+        num_pairs += 1;
+        return;
+    }
+    if (k > R->key) {
+        R->right = new Node(k, v);
+        R->right->parent = R;
+        R->right->left = nil;
+        R->right->right = nil;
+        num_pairs += 1;
+        return;
     }
     return;
 }
