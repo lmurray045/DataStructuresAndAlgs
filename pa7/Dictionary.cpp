@@ -299,13 +299,13 @@ void Dictionary::prev() {
 }
 
 void Dictionary::remove(keyType k) {
-    if (contains(k) == false) {
+    Node * n = search(root, k);
+    if (n == nil) {
         throw std::logic_error("ERROR: in remove(); key is not present\n");
     }
     if (hasCurrent() && currentKey() == k){
         current = nil;
     }
-    Node * n = search(root, k);
     if (n->parent == nil) {
         if (n->right == nil) {
             root = n->left;
