@@ -83,9 +83,6 @@ void Dictionary::preOrderString(std::string& s, Node* R) const{
         return;
     }
     s += R->key;
-    s += " : ";
-    valType v = R->val;
-    s += std::to_string(v);
     s += "\n";
     preOrderString(s, R->left);
     preOrderString(s, R->right);
@@ -176,24 +173,21 @@ bool Dictionary::contains(keyType k) const {
 valType& Dictionary::getValue(keyType k) const {
     Node* n = search(root, k);
     if (n == nil) {
-        cout << "ERROR: in getValue(); Dictionary does not contain key\n";
-        exit(1);
+        throw std::logic_error("ERROR: in getValue(); Dictionary does not contain key\n");
     }
     return n->val;
 }
 
 keyType Dictionary::currentKey() const {
     if (hasCurrent() == false) {
-        cout << "ERROR: in currentKey(); current undefined\n";
-        exit(1);
+        throw std::logic_error("ERROR: in currentKey(); current undefined\n");
     }
     return current->key;
 }
 
 valType& Dictionary::currentVal() const{
     if (hasCurrent() == false) {
-        cout << "ERROR: in currentVal(); current undefined\n";
-        exit(1);
+        throw std::logic_error("ERROR: in currentVal(); current undefined\n");
     }
     return current->val;
 }
@@ -270,37 +264,44 @@ void Dictionary::clear(){
     postOrderDelete(root);
     root = nil;
     num_pairs = 0;
+    current = nil;
     return;
 }
 
 void Dictionary::begin() {
+    if (num_pairs ==  0) {
+        return;
+    }
     current = findMin(root); 
 }
 
 void Dictionary::end() {
+    if (num_pairs ==  0) {
+        return;
+    }
     current = findMax(root); 
 }
 
 void Dictionary::next() {
     if (hasCurrent() == false) {
-        cout << "ERROR: in next(); current undefined\n";
-        exit(1);
+        throw std::logic_error("ERROR: in next(); current undefined\n");
     }
     current = (findNext(current));
 }
 
 void Dictionary::prev() {
     if (hasCurrent() == false) {
-        cout << "ERROR: in prev(); current undefined\n";
-        exit(1);
+        throw std::logic_error("ERROR: in prev(); current undefined\n");
     }
     current = (findPrev(current));
 }
 
 void Dictionary::remove(keyType k) {
     if (contains(k) == false) {
-        cout << "ERROR: in remove(); key is not present\n";
-        exit(1);   
+        throw std::logic_error("ERROR: in remove(); key is not present\n");
+    }
+    if (hasCurrent() && currentKey() == k){
+        current = nil;
     }
     Node * n = search(root, k);
     if (n->parent == nil) {
