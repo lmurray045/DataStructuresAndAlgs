@@ -1,0 +1,32 @@
+###################################
+# Liam Murray, lijamurr
+# CSE101 Spring 2023, Pa7
+# README
+# README for Order program
+####################################
+
+Included Files:
+
+Dictionary.cpp:         Source code for the Dictionary ADT.
+Order.cpp:   			Source code for the  Order Client.
+DictionaryTest.cpp:     Source code for the test program for the Dictionary ADT.
+
+Dictionary.h:       	Include .h file for the necessary Dictionary ADT functions.
+Makefile:     			Makefile for included executables. Usage instructions inside.
+README:       			Usage and instructions for the program.
+
+USAGE:
+
+Run "make" to create the Order executable.
+Run by using the command:
+	Order <infile> <outfile>
+The Order program accepts a list of words integers as an input, then 
+adds them as a <word, line number> pair to a dictionary and writes it
+to the outfile as an in-order and pre-order traversal.
+
+
+Other make commands:
+	make clean: removes generated files
+	make DictionaryTest: makes the DictionaryTest executable
+		run with: ./DictionaryTest
+	make check: runs valgrind on Order, testing for memory leaks.
