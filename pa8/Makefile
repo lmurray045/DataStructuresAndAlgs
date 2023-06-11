@@ -10,10 +10,10 @@
 #  make DictionaryCheck     runs DictionaryClient under valgrind
 #------------------------------------------------------------------------------
 
-MAIN           = WordFrequency
+MAIN          = Order
 ADT            = Dictionary
-SOURCE         = $(MAIN).cpp
-OBJECT         = $(MAIN).o
+SOURCE        = $(MAIN).cpp
+OBJECT        = $(MAIN).o
 ADT_TEST       = $(ADT)Client
 ADT_SOURCE     = $(ADT).cpp
 ADT_OBJECT     = $(ADT).o
@@ -23,8 +23,14 @@ LINK           = g++ -std=c++17 -Wall -o
 REMOVE         = rm -f
 MEMCHECK       = valgrind --leak-check=full
 
+WordFrequency: WordFrequency.o Dictionary.o
+	$(LINK) WordFrequency WordFrequency.o $(ADT_OBJECT)
+
 $(MAIN): $(OBJECT) $(ADT_OBJECT)
 	$(LINK) $(MAIN) $(OBJECT) $(ADT_OBJECT)
+
+WordFrequency.o: WordFrequency.cpp Dictionary.h
+	$(COMPILE) WordFrequency.cpp
 
 $(ADT_TEST): $(ADT_TEST).o $(ADT_OBJECT)
 	$(LINK) $(ADT_TEST) $(ADT_TEST).o $(ADT_OBJECT)
@@ -39,7 +45,7 @@ $(ADT_OBJECT): $(ADT_SOURCE) $(ADT_HEADER)
 	$(COMPILE) $(ADT_SOURCE)
 
 clean:
-	$(REMOVE) $(MAIN) $(ADT_TEST) $(OBJECT) $(ADT_TEST).o $(ADT_OBJECT)
+	$(REMOVE) $(MAIN) $(ADT_TEST) $(OBJECT) $(ADT_TEST).o $(ADT_OBJECT) WordFrequency WordFrequency.o
 
 $(MAIN)Check: $(MAIN)
 	$(MEMCHECK) $(MAIN) Gutenberg myGutenberg-out

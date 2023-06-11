@@ -97,6 +97,7 @@ void Dictionary::RightRotate(Node* N) {
    // RB_InsertFixUP()
 void Dictionary::RB_InsertFixUp(Node* N) {
     //printf("Insert Fix up\n");
+    //cout << "Insert Fix on " << N->key << ": Parent = " << N->parent->key << endl;
     while (N->parent->color == RED) {
         if (N->parent == N->parent->parent->left) {
             Node * y = N->parent->parent->right;
@@ -116,6 +117,7 @@ void Dictionary::RB_InsertFixUp(Node* N) {
                 //printf("Case 3\n");
                 N->parent->color = BLACK;
                 N->parent->parent->color = RED;
+                //cout << "Calling RR on " << N->parent->parent->key << endl;
                 RightRotate(N->parent->parent);
             }
         }
@@ -131,6 +133,7 @@ void Dictionary::RB_InsertFixUp(Node* N) {
             else {
                 if (N == N->parent->left) {
                     N = N->parent;
+                    //cout << "1 Calling RR on " << N->key << endl;
                     RightRotate(N);
                     //printf("Case 5\n");
                 }
@@ -149,6 +152,7 @@ void Dictionary::RB_InsertFixUp(Node* N) {
 void Dictionary::RB_Transplant(Node* u, Node* v) {
     //printf("Transplant\n");
     if (u->parent == nil){
+        //cout << "making " << v->key << " root2" << endl;
         root = v;
     }
     else if (u == u->parent->left) {
@@ -162,13 +166,9 @@ void Dictionary::RB_Transplant(Node* u, Node* v) {
 
 // RB_DeleteFixUp()
 void Dictionary::RB_DeleteFixUp(Node* N) {
-    //printf("Delete Fix\n");
+    //cout << "Delete Fix on: " << N->key << endl;
     Node * w;
-    if (N == nil){
-        return;
-    }
     while (N != root && N->color == BLACK) {
-        //cout << "Key is: " << N->key << endl;
         if (N == N->parent->left) {
             w = N->parent->right;
             if (w->color == RED) {
@@ -185,21 +185,23 @@ void Dictionary::RB_DeleteFixUp(Node* N) {
                 if (w->right->color == BLACK) {
                     w->left->color = BLACK;                // case 3
                     w->color = RED;                       // case 3
+                    //cout << " 2 Calling RR on " << w->key << endl;
                     RightRotate(w);                   // case 3
                     w = N->parent->right; 
-                }    
-            }             
-            w->color = N->parent->color;               // case 4
-            N->parent->color = BLACK;                 // case 4
-            w->right->color = BLACK;                  // case 4
-            LeftRotate(N->parent);                // case 4
-            N = root;
+                }                
+                w->color = N->parent->color;               // case 4
+                N->parent->color = BLACK;                 // case 4
+                w->right->color = BLACK;                  // case 4
+                LeftRotate(N->parent);                // case 4
+                N = root;
+            }
         }                           
         else {
             w = N->parent->left;
             if (w->color == RED) {
                 w->color = BLACK;                        // case 5
                 N->parent->color = RED;                   // case 5
+                //cout << " 3 Calling RR on " << N->parent->key << endl;
                 RightRotate(N->parent);               // case 5
                 w = N->parent->left;    
             }                  
@@ -217,6 +219,7 @@ void Dictionary::RB_DeleteFixUp(Node* N) {
                 w->color = N->parent->color;               // case 8
                 N->parent->color = BLACK;                 // case 8
                 w->left->color = BLACK;                   // case 8
+                //cout << " 4 Calling RR on " << N->parent->key << endl;
                 RightRotate(N->parent);               // case 8
                 N = root; 
             }
@@ -233,11 +236,11 @@ void Dictionary::RB_Delete(Node* N) {
     int yog = y->color;
     if (N->left == nil){
         x = N->right;
-        RB_Transplant(N, x);
+        RB_Transplant(N, N->right);
     }
     else if (N->right == nil) {
-        Node * x = N->left;
-        RB_Transplant(N, x);
+        x = N->left;
+        RB_Transplant(N, N->left);
     }
     else {
         y = findMin(N->right);
@@ -256,6 +259,7 @@ void Dictionary::RB_Delete(Node* N) {
         y->left->parent = y;
         y->color = N->color;
     }
+    delete N;
     if (yog == BLACK) {
         RB_DeleteFixUp(x);
     }
@@ -453,13 +457,6 @@ bool Dictionary::hasCurrent() const {
 
 // Manipulation procedures -------------------------------------------------
 void Dictionary::setValue(keyType k, valType v){
-    if (num_pairs == 0) {
-        root = (new Node(k, v));
-        root->parent = nil;
-        root->left = nil;
-        root->right = nil;
-        num_pairs += 1;
-    }
     Node * z = new Node(k, v);
     Node * y = nil;
     Node * x = root;
@@ -480,6 +477,7 @@ void Dictionary::setValue(keyType k, valType v){
     z->parent = y;
     if (y == nil) {
         root = z;
+        z->color = BLACK;
     }
     else if (z->key < y->key) {
         y->left = z;
@@ -490,6 +488,7 @@ void Dictionary::setValue(keyType k, valType v){
     z->left = nil;
     z->right = nil;
     z->color = RED;
+    num_pairs += 1;
     RB_InsertFixUp(z);
     return;
 }
@@ -539,6 +538,7 @@ void Dictionary::remove(keyType k) {
         current = nil;
     }
     RB_Delete(n);
+    num_pairs -= 1;
     return;
 }  
 
@@ -587,66 +587,6 @@ Dictionary& Dictionary::operator=( const Dictionary& D ){
 }
 /*
 int main() {
-    Dictionary D;
-    D.setValue("B", 1);
-    D.setValue("A", 2);
-    D.setValue("C", 3);
-    D.setValue("D", 4);
-    D.setValue("C", 99);
 
-    Dictionary C;
-    C.setValue("A", 2);
-    C.setValue("D", 4);
-    C.setValue("B", 1);
-    C.setValue("C", 3);
-    C.setValue("C", 99);
-    cout << D << endl << endl;
-    cout << "Size: " << D.size() << endl;
-    cout << "D contains 'Hello': " << D.contains("A") << endl;
-    cout << "D contains 'Womp Womp': " << D.contains("Womp Womp") << endl << endl;
-    cout << "Value of 'Whats Up': " << D.getValue("C") << endl;
-    //cout << "Value of 'Womp Womp': " << D.getValue("Womp Womp") << endl;
-    cout << endl << endl;
-    std::string s = "";
-    cout << "Pre Order of Dictionary D: " << endl << D.pre_string() << endl << endl;
-
-
-    cout << "Dictionary C: \n" << C << endl;
-    cout << "Dictionary D: \n" << D << endl;
-
-    cout << "Comparing Dictionary C and D : " << D.equals(C) << endl << endl;
-
-    Dictionary E(D);
-    cout << "Copying D into E via Constructor...\n";
-    cout << "Dictionary E: \n" << E << endl;
-
-    
-    Dictionary B;
-    B = D;
-    cout << "Copying D into B via Overload...\n";
-    cout << "Dictionary B: \n" << B << endl;
-
-
-    D.begin();
-    cout << "Min value of D: (" << D.currentKey()  << " : " << D.currentVal()  << ") "<< endl;
-    D.next();
-    cout << "Next Cursor value: (" << D.currentKey()  << " : " << D.currentVal()  << ") "<< endl;
-    D.next();
-    cout << "Next Cursor value: (" << D.currentKey()  << " : " << D.currentVal()  << ") "<< endl << endl;
-    D.end();
-    cout << "Max value of D: (" << D.currentKey()  << " : " << D.currentVal()  << ") "<< endl << endl;
-    D.prev();
-    cout << "Prev Cursor value: (" << D.currentKey()  << " : " << D.currentVal()  << ") "<< endl;
-    D.prev();
-    cout << "Prev Cursor value: (" << D.currentKey()  << " : " << D.currentVal()  << ") "<< endl << endl;
-    D.remove("A");
-    cout << "Removing 'A': \n" << D.pre_string() << endl;
-    D.remove("B");
-    cout << "Removing 'B': \n" << D.pre_string() << endl;
-
-    D.clear();
-    cout << "D after being cleared: " << D << endl << endl;
-    
-    return 0;
 }
 */

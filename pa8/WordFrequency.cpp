@@ -21,7 +21,7 @@ int main(int argc, char * argv[]){
    string line;
    string tokenBuffer;
    string token;
-   string delim = " \t\\\"\',<.>/?;:[{]}|`~!@#$^&*()-_=+0123456789";
+   string delim = "  \t\\\"\',<.>/?;:[{]}|`~!@#$%^&*()-_=+0123456789";
 
    // check command line for correct number of arguments
    if( argc != 3 ){
@@ -58,6 +58,9 @@ while( getline(in, line) )  {
     end   = min(line.find_first_of(delim, begin), len);
     token = line.substr(begin, end-begin);
 
+    if (token == "") {
+        continue;
+    }
     if (D.contains(token) == true) {
         valType v = D.getValue(token);
         v++;
@@ -65,6 +68,7 @@ while( getline(in, line) )  {
     else {
         D.setValue(token, 1);
     }
+    
     while( token!="" ){  // we have a token
         // update token buffer
         tokenBuffer += "   "+token+"\n";
@@ -74,6 +78,9 @@ while( getline(in, line) )  {
         begin = min(line.find_first_not_of(delim, end+1), len);
         end   = min(line.find_first_of(delim, begin), len);
         token = line.substr(begin, end-begin);
+        if (token == "") {
+            continue;
+        }
         if (D.contains(token) == true) {
             valType v = D.getValue(token);
             v++;
@@ -84,7 +91,7 @@ while( getline(in, line) )  {
     }
 }
 
-out << D << endl;
+out << D;
 
 // close files 
 in.close();
